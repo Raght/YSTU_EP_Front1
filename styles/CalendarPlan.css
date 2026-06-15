@@ -1,3 +1,24 @@
+.calendar-plan-create-form input {
+  padding: 6px 8px;
+  font-size: 14px;
+  border: 1px solid #bfbfbf;
+  border-radius: 4px;
+}
+
+.calendar-plans button {
+  padding: 8px 14px;
+  font-size: 14px;
+  background: #2f6fed;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.calendar-plan button:hover {
+  background: #2458c7;
+}
+
 .calendar-plan {
   margin-top: 24px;
   padding: 20px;

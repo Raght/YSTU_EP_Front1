@@ -17,7 +17,7 @@ export function CalendarPlansTable({ educationalPlanId, onBeforeCreate }: Props)
   console.log('CalendarPlansTable render:', { educationalPlanId, plans, loading, error });
 
   return (
-    <div>
+    <div className="calendar-plans">
       <h3
           style={{
             marginBottom: 16,
@@ -28,7 +28,9 @@ export function CalendarPlansTable({ educationalPlanId, onBeforeCreate }: Props)
           Календарный учебный график
         </h3>
 
-      <CalendarPlanForm onSave={createPlan} onBeforeCreate={onBeforeCreate} />
+      <div className="calendar-plan-create-form">
+        <CalendarPlanForm onSave={createPlan} onBeforeCreate={onBeforeCreate} />
+      </div>
 
       {error && (
         <div style={{ 
@@ -60,7 +62,6 @@ export function CalendarPlansTable({ educationalPlanId, onBeforeCreate }: Props)
 
           <div className="calendar-plan__actions">
             <button 
-              className="calendar-plan__actions" 
               onClick={() => {
                 if (window.confirm('Вы уверены?')) {
                   deletePlan(plan.id);

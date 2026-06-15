@@ -16,6 +16,7 @@ import { CoreModal } from '@/app/components/CoreModal'
 import { SaveMapModal } from '@/app/components/SaveMapModal'
 import { CalendarPlansTable } from '@/app/components/CalendarPlansTable'
 import { CompetenceMatrix } from '@/app/components/CompetenceMatrix'
+import { IndicatorsTable } from './components/IndicatorsTable'
 import { ErrorWindow } from '@/app/components/ErrorWindow'
 
 import { useDisciplines } from '@/app/hooks/useDisciplines'
@@ -28,7 +29,6 @@ import { useFileOperations } from '@/app/hooks/useFileOperations'
 import { useSaveMap } from '@/app/hooks/useSaveMap'
 import { useDownloadMap } from '@/app/hooks/useDownloadMap'
 import { useStudyPlanPdf } from '@/app/hooks/useStudyPlanPdf'
-import { useDownloadIndicatorsTable } from '@/app/hooks/useIndicatorsTable'
 import {
 	Discipline,
 	DirectionData,
@@ -79,9 +79,7 @@ const Home = () => {
 		useDownloadMap(showAlert)
 	const { downloadPdf: downloadEducationalPlanPdf, isGeneratingPdf } = useStudyPlanPdf(showAlert)
 
-	const { downloadExcel: downloadIndicatorsTableExcel,
-		    isDownloading: isIndicatorsTableExcelDownloading } =
-			useDownloadIndicatorsTable(showAlert);
+	
 
 	const { handleDragStart, handleDrop } = useDragAndDrop(
 		rows,
@@ -376,7 +374,6 @@ const Home = () => {
 						? `${currentDirection.name}, ${currentDirection.level}, ${currentDirection.form}, ${currentDirection.semesters} сем.`
 						: undefined
 				}
-				onExportIndicatorsTableExcelClick={() => downloadIndicatorsTableExcel(currentDirection)}
 			/>
 
 			<div className={mainContent['main-content']}>
@@ -443,7 +440,13 @@ const Home = () => {
 						)}
 
 						{showCompetenceMatrix && currentDirection && (
-							<CompetenceMatrix rows={rows} readOnly={false} />
+							<CompetenceMatrix educationalPlanId={currentDirection.id} 
+							                  rows={rows}
+											  readOnly={false} />
+						)}
+
+						{currentDirection && (
+						  	<IndicatorsTable educationalPlanId={currentDirection.id}/>
 						)}
 					</main>
 				</div>

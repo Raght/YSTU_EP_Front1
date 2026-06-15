@@ -378,12 +378,12 @@ const onCellKeyPress = (e: React.ChangeEvent<HTMLInputElement>, ci: number, wi: 
       {/* ШАПКА */}
       <div className="calendar-plan__header">
         <label>
-          Название:
+          Название:&nbsp;
           <input placeholder="Название" value={data.title}
           onChange={(e) => setData({ ...data, title: e.target.value })} />
         </label>
         <label>
-          Учебный год:
+          Учебный год:&nbsp;
         <input 
           placeholder="Учебный год" 
           value={data.academic_year}
@@ -396,23 +396,23 @@ const onCellKeyPress = (e: React.ChangeEvent<HTMLInputElement>, ci: number, wi: 
         />
         </label>
         <label>
-          Группа:
+          Группа:&nbsp;
         <input placeholder="Группа" value={data.group}
           onChange={(e) => setData({ ...data, group: e.target.value })} />
         </label>
         <label>
-          Профиль:
+          Профиль:&nbsp;
         <input placeholder="Профиль" value={data.profile}
           onChange={(e) => setData({ ...data, profile: e.target.value })} />
         </label>
         <label>
-          Рег. номер:
+          Рег. номер:&nbsp;
         <input placeholder="Рег. номер" value={data.reg_number}
           onChange={(e) => setData({ ...data, reg_number: e.target.value })} />
         </label>
 
         <label>
-          Дата начала обучения:
+          Дата начала обучения:&nbsp;
           <input 
             type="date" 
             value={startDate}
@@ -424,7 +424,7 @@ const onCellKeyPress = (e: React.ChangeEvent<HTMLInputElement>, ci: number, wi: 
         </label>
 
         <label>
-          Дата окончания обучения:
+          Дата окончания обучения:&nbsp;
           <input 
             type="date" 
             value={endDate}
@@ -451,7 +451,7 @@ const onCellKeyPress = (e: React.ChangeEvent<HTMLInputElement>, ci: number, wi: 
         )}
 
         <label>
-          Количество курсов:
+          Количество курсов:&nbsp;
           <select value={courses.length}
             onChange={(e) => setCoursesCount(+e.target.value)}>
             {Array.from({ length: MAX_COURSES }, (_, i) => (

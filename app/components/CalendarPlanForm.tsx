@@ -69,13 +69,13 @@ export function CalendarPlanForm({ onSave, onBeforeCreate }: CalendarPlanFormPro
   return (
     <form onSubmit={submit} style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
       <input 
-        placeholder="Название" 
+        placeholder="Название"
         value={title} 
         onChange={e => setTitle(e.target.value)}
         disabled={isSubmitting}
       />
       <input 
-        placeholder="Учебный год" 
+        placeholder="Учебный год"
         value={year} 
         onChange={e => setYear(e.target.value)}
         disabled={isSubmitting}
@@ -98,8 +98,7 @@ export function CalendarPlanForm({ onSave, onBeforeCreate }: CalendarPlanFormPro
         onChange={e => setReg(e.target.value)}
         disabled={isSubmitting}
       />
-      <button 
-        className="calendar-plan__actions" 
+      <button
         type="submit"
         disabled={isSubmitting}
       >
