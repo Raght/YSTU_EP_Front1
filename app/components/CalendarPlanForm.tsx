@@ -119,7 +119,6 @@ export function CalendarPlanForm({ onSave, onBeforeCreate, semesters }: Calendar
         disabled={isSubmitting}
       />
       <button
-        className="calendar-plan__actions"
         type="submit"
         disabled={isSubmitting}
       >

@@ -227,21 +227,75 @@ export function CalendarPlanGrid({ plan, onSave, semesters }: Props) {
     <div className="calendar-plan">
       <h3>Календарный учебный график</h3>
       <div className="calendar-plan__header">
-        <label>Название:<input placeholder="Название" value={data.title} onChange={(e) => setData({ ...data, title: e.target.value })} /></label>
-        <label>Учебный год:<input placeholder="Учебный год" value={data.academic_year} onChange={(e) => { setData({ ...data, academic_year: e.target.value }); if (e.target.value) { setStartDate(`${e.target.value}-09-01`); } }} /></label>
-        <label>Группа:<input placeholder="Группа" value={data.group} onChange={(e) => setData({ ...data, group: e.target.value })} /></label>
-        <label>Профиль:<input placeholder="Профиль" value={data.profile} onChange={(e) => setData({ ...data, profile: e.target.value })} /></label>
-        <label>Рег. номер:<input placeholder="Рег. номер" value={data.reg_number} onChange={(e) => setData({ ...data, reg_number: e.target.value })} /></label>
-        <label>Дата начала обучения:<input type="date" value={startDate} onChange={handleStartDateChange} /><small style={{ display: 'block', marginTop: '4px', color: '#666', fontSize: '12px' }}>(Если выходной день - начнётся с ближайшего понедельника)</small></label>
-        <label>Дата окончания обучения:<input type="date" value={endDate} onChange={handleEndDateChange} /><small style={{ display: 'block', marginTop: '4px', color: '#666', fontSize: '12px' }}>(Если выходной день - обучение закончится в пятницу)</small></label>
-        
+        <label>
+          Название:&nbsp;
+          <input placeholder="Название" value={data.title}
+          onChange={(e) => setData({ ...data, title: e.target.value })} />
+        </label>
+        <label>
+          Учебный год:&nbsp;
+        <input 
+          placeholder="Учебный год" 
+          value={data.academic_year}
+          onChange={(e) => {
+            setData({ ...data, academic_year: e.target.value });
+            if (e.target.value) {
+              setStartDate(`${e.target.value}-09-01`);
+            }
+          }} 
+        />
+        </label>
+        <label>
+          Группа:&nbsp;
+        <input placeholder="Группа" value={data.group}
+          onChange={(e) => setData({ ...data, group: e.target.value })} />
+        </label>
+        <label>
+          Профиль:&nbsp;
+        <input placeholder="Профиль" value={data.profile}
+          onChange={(e) => setData({ ...data, profile: e.target.value })} />
+        </label>
+        <label>
+          Рег. номер:&nbsp;
+        <input placeholder="Рег. номер" value={data.reg_number}
+          onChange={(e) => setData({ ...data, reg_number: e.target.value })} />
+        </label>
+
+        <label>
+          Дата начала обучения:&nbsp;
+          <input 
+            type="date" 
+            value={startDate}
+            onChange={handleStartDateChange}
+          />
+          <small style={{ display: 'block', marginTop: '4px', color: '#666', fontSize: '12px' }}>
+            (Если выходной день - начнётся с ближайшего понедельника)
+          </small>
+        </label>
+
+        <label>
+          Дата окончания обучения:&nbsp;
+          <input 
+            type="date" 
+            value={endDate}
+            onChange={handleEndDateChange}
+          />
+          <small style={{ display: 'block', marginTop: '4px', color: '#666', fontSize: '12px' }}>
+            (Если выходной день - обучение закончится в пятницу)
+          </small>
+        </label>
+
+        {/* Отображение ошибки дат */}
         {dateError && (
           <div style={{ color: '#dc3545', fontSize: '14px', marginTop: '8px', padding: '8px', backgroundColor: '#f8d7da', borderRadius: '4px', width: '100%' }}>
             ⚠️ {dateError}
           </div>
         )}
-        <label>Количество курсов:
-          <select value={courses.length} onChange={(e) => setCoursesCount(+e.target.value)}>
+
+        <label>
+          Количество курсов:&nbsp;
+          <select value={courses.length}
+            onChange={(e) => setCoursesCount(+e.target.value)}>
             {Array.from({ length: MAX_COURSES }, (_, i) => (
               <option key={i + 1}>{i + 1}</option>
             ))}

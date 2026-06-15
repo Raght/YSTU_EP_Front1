@@ -22,8 +22,7 @@ export const Header = ({
 	onExportEducationalPlanPdfClick: onExportEducationalPlanPdfClick,
 	onToggleCompetenceMatrix,
 	showCompetenceMatrix,
-	directionInfo,
-	onExportIndicatorsTableExcelClick: onExportIndicatorsTableExcelClick
+	directionInfo
 }: HeaderProps) => {
 	const [showReferences, setShowReferences] = useState(false)
 	const [isFileMenuHovered, setIsFileMenuHovered] = useState(false)
@@ -77,20 +76,6 @@ export const Header = ({
 					<button onClick={() => setShowReferences(!showReferences)}>
 						Справочники
 					</button>
-
-					<div
-						className={header['file-menu-container']}
-						onMouseEnter={() => setIsFileMenuHovered(true)}
-						onMouseLeave={() => setIsFileMenuHovered(false)}
-					>
-						<button>Индикаторы</button>
-
-						{isFileMenuHovered && (
-							<div className={header['file-menu']}>
-								<button onClick={onExportIndicatorsTableExcelClick}>Экспорт в Excel</button>
-							</div>
-						)}
-					</div>
 				</div>
 			</div>
 
