@@ -1,5 +1,4 @@
 'use client';
-
 import { useCalendarPlans } from '../hooks/useCalendarPlans';
 import { CalendarPlanForm } from './CalendarPlanForm';
 import { CalendarPlanGrid } from './CalendarPlanGrid';
@@ -7,13 +6,13 @@ import '../../styles/CalendarPlan.css';
 
 type Props = {
   educationalPlanId: number;
+  semesters: number;
   onBeforeCreate?: () => Promise<string[]>;
 };
 
-export function CalendarPlansTable({ educationalPlanId, onBeforeCreate }: Props) {
+export function CalendarPlansTable({ educationalPlanId, semesters, onBeforeCreate }: Props) {
   const { plans, loading, error, createPlan, updatePlan, deletePlan } =
     useCalendarPlans(educationalPlanId);
-
   console.log('CalendarPlansTable render:', { educationalPlanId, plans, loading, error });
 
   return (
@@ -33,10 +32,10 @@ export function CalendarPlansTable({ educationalPlanId, onBeforeCreate }: Props)
       </div>
 
       {error && (
-        <div style={{ 
-          color: '#d32f2f', 
-          fontSize: 14, 
-          marginTop: 8, 
+        <div style={{
+          color: '#d32f2f',
+          fontSize: 14,
+          marginTop: 8,
           padding: 8,
           background: '#ffebee',
           borderRadius: 4
@@ -44,22 +43,19 @@ export function CalendarPlansTable({ educationalPlanId, onBeforeCreate }: Props)
           Ошибка: {error}
         </div>
       )}
-
       {loading && <div>Загрузка...</div>}
-
       {!loading && plans.length === 0 && !error && (
         <div style={{ color: '#999', fontSize: 14, marginTop: 8 }}>
           Нет календарных планов. Создайте новый план выше.
         </div>
       )}
-
       {plans.map((plan) => (
         <div key={plan.id} style={{ marginTop: 24 }}>
           <CalendarPlanGrid
             plan={plan}
             onSave={(data) => updatePlan(plan.id, data)}
+            semesters={semesters}
           />
-
           <div className="calendar-plan__actions">
             <button 
               onClick={() => {
