@@ -115,7 +115,6 @@ export function CalendarPlanGrid({ plan, onSave, semesters }: Props) {
   };
 
   const updateWeek = (ci: number, wi: number, v: string) => {
-    if (v == " ") { v = ""; }
     const next = courses.map((c, i) =>
       i === ci
         ? { ...c, weeks: c.weeks.map((w, j) => (j === wi ? v : w)) }
@@ -191,36 +190,58 @@ export function CalendarPlanGrid({ plan, onSave, semesters }: Props) {
     }
   };
 
+  const selectAll = (element: HTMLInputElement) =>
+  {
+    setTimeout(function() {
+      let length = element.value ? element.value.length : 0;
+      element.selectionStart = 0;
+      element.selectionEnd = length;
+    }, 0);
+  }
+
   const onCellFocus = (e: React.ChangeEvent<HTMLInputElement>) => {
     let input_element = e.currentTarget;
-    setTimeout(function() {
-      let length = input_element.value ? input_element.value.length : 0;
-      input_element.selectionStart = 0;
-      input_element.selectionEnd = length;
-    }, 0);
+    selectAll(input_element);
   };
 
   const onCellKeyPress = (e: React.KeyboardEvent<HTMLInputElement>, ci: number, wi: number) => {
     let d_ci = 0, d_wi = 0;
-    if (e.keyCode == 37 && e.ctrlKey) d_wi = Math.max(-10, -wi);
-    else if (e.keyCode == 38 && e.ctrlKey) d_ci = -ci;
-    else if (e.keyCode == 39 && e.ctrlKey) d_wi = Math.min(10, WEEK_COUNT - 1 - wi);
-    else if (e.keyCode == 40 && e.ctrlKey) d_ci = courses.length - 1 - ci;
-    else if (e.keyCode == 37) d_wi = Math.max(-1, -wi);
-    else if (e.keyCode == 38) d_ci = Math.max(-1, -ci);
-    else if (e.keyCode == 39) d_wi = Math.min(1, WEEK_COUNT - 1 - wi);
-    else if (e.keyCode == 40) d_ci = Math.min(1, courses.length - 1 - ci);
-    else if (e.keyCode == 36 && e.ctrlKey) { d_ci = -ci; d_wi = -wi; }
-    else if (e.keyCode == 35 && e.ctrlKey) { d_ci = courses.length - 1 - ci; d_wi = WEEK_COUNT - 1 - wi; }
-    else if (e.keyCode == 36) d_wi = -wi;
-    else if (e.keyCode == 35) d_wi = WEEK_COUNT - 1 - wi;
+    if (e.keyCode == 37 && e.ctrlKey) d_wi = Math.max(-10, -wi);  // Ctrl + Left
+    else if (e.keyCode == 38 && e.ctrlKey) d_ci = -ci;  // Ctrl + Up
+    else if (e.keyCode == 39 && e.ctrlKey) d_wi = Math.min(10, WEEK_COUNT - 1 - wi);  // Ctrl + Right
+    else if (e.keyCode == 40 && e.ctrlKey) d_ci = courses.length - 1 - ci;  // Ctrl + Down
+    else if (e.keyCode == 37) d_wi = Math.max(-1, -wi);  // Left
+    else if (e.keyCode == 38) d_ci = Math.max(-1, -ci);  // Up
+    else if (e.keyCode == 39) d_wi = Math.min(1, WEEK_COUNT - 1 - wi);  // Right
+    else if (e.keyCode == 40) d_ci = Math.min(1, courses.length - 1 - ci);  // Down
+    else if (e.keyCode == 36 && e.ctrlKey) { d_ci = -ci; d_wi = -wi; }  // Ctrl + Home
+    else if (e.keyCode == 35 && e.ctrlKey) { d_ci = courses.length - 1 - ci; d_wi = WEEK_COUNT - 1 - wi; }  // Ctrl + End
+    else if (e.keyCode == 36) d_wi = -wi;  // Home
+    else if (e.keyCode == 35) d_wi = WEEK_COUNT - 1 - wi;  // End
     else return;
 
     const mod = (x: number, y: number) => { return ((x % y) + y) % y; };
     let new_ci = mod(ci + d_ci, courses.length);
     let new_wi = mod(wi + d_wi, WEEK_COUNT);
-    const cell_move_to = document.getElementById(`calendar-plan-cell-course-${new_ci}-week-${new_wi}`);
-    cell_move_to?.focus();
+    new_ci = ci + d_ci;
+    new_wi = wi + d_wi;
+    let cell_move_to = document.getElementById(`calendar-plan-cell-course-${new_ci}-week-${new_wi}`) as HTMLInputElement | null;
+    if (cell_move_to)
+    {
+      cell_move_to.focus();
+      // If an arrow is pressed against borders of calendar plan,
+      // cell value becomes deselected, because focus does not do anything,
+      // if input is already focused
+      selectAll(cell_move_to);
+    }
+  };
+
+  const onChangeCell = (e: React.KeyboardEvent<HTMLInputElement>, ci: number, wi: number) => {
+    let v = e.target.value.toUpperCase();
+    if (v == " ") { v = ""; }
+    updateWeek(ci, wi, v);
+    let input_element = e.currentTarget;
+    selectAll(input_element);
   };
 
   return (
@@ -345,7 +366,7 @@ export function CalendarPlanGrid({ plan, onSave, semesters }: Props) {
                           className={`calendar-plan__week-input${isInvalidWeek ? ' calendar-plan__week-input_invalid' : ''}`}
                           value={w}
                           maxLength={1}
-                          onChange={(e) => updateWeek(ci, wi, e.target.value.toUpperCase())}
+                          onChange={(e) => onChangeCell(e, ci, wi)}
                           onFocus={(e) => { onCellFocus(e); }}
                           onKeyDown={(e) => { onCellKeyPress(e, ci, wi); }}
                         />
