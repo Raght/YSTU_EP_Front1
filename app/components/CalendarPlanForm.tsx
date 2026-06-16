@@ -133,7 +133,6 @@ export function CalendarPlanForm({ onSave, onBeforeCreate, semesters }: Calendar
         onChange={handleImport}
       />
       <button
-        className="calendar-plan__actions"
         type="button"
         disabled={isSubmitting}
         onClick={() => document.getElementById('calendar-plan-import')?.click()}
