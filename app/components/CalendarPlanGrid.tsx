@@ -220,20 +220,15 @@ export function CalendarPlanGrid({ plan, onSave, semesters }: Props) {
     else if (e.keyCode == 35) d_wi = WEEK_COUNT - 1 - wi;  // End
     else return;
 
+    e.preventDefault();
+
     const mod = (x: number, y: number) => { return ((x % y) + y) % y; };
     let new_ci = mod(ci + d_ci, courses.length);
     let new_wi = mod(wi + d_wi, WEEK_COUNT);
     new_ci = ci + d_ci;
     new_wi = wi + d_wi;
     let cell_move_to = document.getElementById(`calendar-plan-cell-course-${new_ci}-week-${new_wi}`) as HTMLInputElement | null;
-    if (cell_move_to)
-    {
-      cell_move_to.focus();
-      // If an arrow is pressed against borders of calendar plan,
-      // cell value becomes deselected, because focus does not do anything,
-      // if input is already focused
-      selectAll(cell_move_to);
-    }
+    cell_move_to?.focus();
   };
 
   const onChangeCell = (e: React.KeyboardEvent<HTMLInputElement>, ci: number, wi: number) => {
