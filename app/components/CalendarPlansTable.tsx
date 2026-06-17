@@ -10,7 +10,7 @@ type Props = {
   onBeforeCreate?: () => Promise<string[]>;
 };
 
-export function CalendarPlansTable({ educationalPlanId, semesters, onBeforeCreate }: Props) {
+export function CalendarPlansTable({ educationalPlanId, onBeforeCreate }: Props) {
   const { plans, loading, error, createPlan, updatePlan, deletePlan } =
     useCalendarPlans(educationalPlanId);
   console.log('CalendarPlansTable render:', { educationalPlanId, plans, loading, error });
@@ -28,7 +28,11 @@ export function CalendarPlansTable({ educationalPlanId, semesters, onBeforeCreat
         </h3>
 
       <div className="calendar-plan-create-form">
-        <CalendarPlanForm onSave={createPlan} onBeforeCreate={onBeforeCreate} />
+        <CalendarPlanForm
+          currentDirectionId={educationalPlanId}
+          onSave={createPlan}
+          onBeforeCreate={onBeforeCreate}
+        />
       </div>
 
       {error && (
@@ -52,9 +56,9 @@ export function CalendarPlansTable({ educationalPlanId, semesters, onBeforeCreat
       {plans.map((plan) => (
         <div key={plan.id} style={{ marginTop: 24 }}>
           <CalendarPlanGrid
+            currentDirectionId={educationalPlanId}
             plan={plan}
             onSave={(data) => updatePlan(plan.id, data)}
-            semesters={semesters}
           />
           <div className="calendar-plan__actions">
             <button 

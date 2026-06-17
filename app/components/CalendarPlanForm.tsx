@@ -4,12 +4,13 @@ import { importCalendarPlan } from '../hooks/importCalendarPlan';
 import '../../styles/CalendarPlan.css';
 
 interface CalendarPlanFormProps {
+  currentDirectionId: number;
   onSave: (data: any) => void;
   onBeforeCreate?: () => Promise<string[]>;
   semesters: number;
 }
 
-export function CalendarPlanForm({ onSave, onBeforeCreate, semesters }: CalendarPlanFormProps) {
+export function CalendarPlanForm({ currentDirectionId, onSave, onBeforeCreate }: CalendarPlanFormProps) {
   const [title, setTitle] = useState('');
   const [year, setYear] = useState('');
   const [group, setGroup] = useState('');
@@ -34,17 +35,48 @@ export function CalendarPlanForm({ onSave, onBeforeCreate, semesters }: Calendar
       }
     }
     setIsSubmitting(true);
-    console.log('CalendarPlanForm: submitting form...');
+
+    let semesters = 1;
     try {
-      const defaultCoursesCount = Math.ceil(semesters / 2);
-      await onSave({
-        title,
+			const res = await fetch(`http://localhost:8001/directions/${currentDirectionId}`);
+			if (!res.ok) {
+				throw new Error(`HTTP ${res.status}: ${res.statusText}`)
+			}
+			const data = await res.json();
+      console.log('CalendarPlanForm: received data:', data)
+      semesters = data.semester_count;
+    }
+    catch (error)
+    {
+			const errorMsg = error instanceof Error ? error.message : String(error)
+			console.error('Failed to load direction:', errorMsg)
+    }
+    console.log('CalendarPlanForm: submitting form...');
+    console.log('CalendarPlanForm data:');
+    console.log(`semesters = ${semesters}`);
+    console.log({
+        title: title,
         academic_year: year,
-        group,
-        profile,
+        group: group,
+        profile: profile,
         reg_number: reg,
         start_date: `${year}-09-01`,
         end_date: `${parseInt(year) + 1}-08-31`,
+        courses: Array.from({ length: Math.ceil(semesters / 2) }, (_, i) => ({
+          course: i + 1,
+          weeks: Array(52).fill('')
+        }))
+    });
+    try {
+      const defaultCoursesCount = Math.ceil(semesters / 2);
+      await onSave({
+        title: title,
+        academic_year: year,
+        group: group,
+        profile: profile,
+        reg_number: reg,
+        start_date: new Date(year, 8, 1).toLocaleDateString("en-CA"),
+        end_date: new Date(parseInt(year) + 1, 7, 31).toLocaleDateString("en-CA"),
         courses: Array.from({ length: defaultCoursesCount }, (_, i) => ({
           course: i + 1,
           weeks: Array(52).fill('')
