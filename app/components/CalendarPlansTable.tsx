@@ -28,7 +28,11 @@ export function CalendarPlansTable({ educationalPlanId, semesters, onBeforeCreat
         </h3>
 
       <div className="calendar-plan-create-form">
-        <CalendarPlanForm onSave={createPlan} onBeforeCreate={onBeforeCreate} />
+          <CalendarPlanForm 
+              onSave={createPlan} 
+              onBeforeCreate={onBeforeCreate} 
+              semesters={semesters} 
+          />
       </div>
 
       {error && (

@@ -217,22 +217,27 @@ const Home = () => {
 			},
 			body: JSON.stringify(rows),
 		})
-			.then(response => response.json())
-			.then(data => {
-				showAlert(
-					data.isValid
-						? 'Данные валидны! Ошибок не найдено'
-						: 'Данные не валидны! Найдены ошибки в плане обучения.'
-				)
-
-				setValidationResult(data)
-				setShowValidationTab(true)
+		.then(response => response.json())
+		.then(data => {
+			showAlert(
+				data.isValid
+					? 'Данные валидны! Ошибок не найдено'
+					: 'Данные не валидны! Найдены ошибки в плане обучения.'
+			)
+			setValidationResult(data)
+			setShowValidationTab(true)
+		})
+		.catch(error => {
+			// ИСПРАВЛЕНО: Безопасно извлекаем строку из объекта Error
+			const errorMsg = error instanceof Error ? error.message : 'Произошла неизвестная ошибка при проверке'
+			
+			showAlert(errorMsg)
+			setValidationResult({ 
+				isValid: false, 
+				results: [{ message: errorMsg, severity: 'blocking', details: {} }] 
 			})
-			.catch(error => {
-				showAlert(error)
-				setValidationResult({ error: error.message })
-				setShowValidationTab(true)
-			})
+			setShowValidationTab(true)
+		})
 	}
 
 	useEffect(() => {

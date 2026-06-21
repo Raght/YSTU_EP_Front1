@@ -18,50 +18,53 @@ export function CalendarPlanForm({ onSave, onBeforeCreate, semesters }: Calendar
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submit = async (e: any) => {
-    e.preventDefault();
-    if (!title.trim() || !year.trim() || !group.trim() || !profile.trim() || !reg.trim()) {
-      alert('Заполните все поля');
-      return;
-    }
-    if (onBeforeCreate) {
-      const problematic = await onBeforeCreate();
-      if (problematic.length > 0) {
-        alert(
-          'Невозможно сформировать учебный план. Следующие дисциплины относятся к неактуальным кафедрам:\n' +
-            problematic.join('\n')
-        );
-        return;
+      e.preventDefault();
+      if (!title.trim() || !year.trim() || !group.trim() || !profile.trim() || !reg.trim()) {
+          alert('Заполните все поля');
+          return;
       }
-    }
-    setIsSubmitting(true);
-    console.log('CalendarPlanForm: submitting form...');
-    try {
-      const defaultCoursesCount = Math.ceil(semesters / 2);
-      await onSave({
-        title,
-        academic_year: year,
-        group,
-        profile,
-        reg_number: reg,
-        start_date: `${year}-09-01`,
-        end_date: `${parseInt(year) + 1}-08-31`,
-        courses: Array.from({ length: defaultCoursesCount }, (_, i) => ({
-          course: i + 1,
-          weeks: Array(52).fill('')
-        }))
-      });
-      console.log('CalendarPlanForm: form submitted successfully');
-      setTitle('');
-      setYear('');
-      setGroup('');
-      setProfile('');
-      setReg('');
-    } catch (error) {
-      console.error('CalendarPlanForm: submission error:', error);
-      alert('Ошибка при создании плана');
-    } finally {
-      setIsSubmitting(false);
-    }
+      if (onBeforeCreate) {
+          const problematic = await onBeforeCreate();
+          if (problematic.length > 0) {
+              alert(
+                  'Невозможно сформировать учебный план. Следующие дисциплины относятся к неактуальным кафедрам:\n' +
+                  problematic.join('\n')
+              );
+              return;
+          }
+      }
+      setIsSubmitting(true);
+      try {
+          const defaultCoursesCount = Math.ceil((semesters || 8) / 2); 
+          
+          await onSave({
+              title,
+              academic_year: year,
+              group,
+              profile,
+              reg_number: reg,
+              start_date: `${year}-09-01`,
+              end_date: `${parseInt(year) + 1}-08-31`,
+              courses: Array.from({ length: defaultCoursesCount }, (_, i) => ({
+                  course: i + 1,
+                  weeks: Array(52).fill('')
+              }))
+          });
+          
+          console.log('CalendarPlanForm: form submitted successfully');
+          
+          // setTitle('');
+          // setYear('');
+          // setGroup('');
+          // setProfile('');
+          // setReg('');
+          
+      } catch (error) {
+          console.error('CalendarPlanForm: submission error:', error);
+          alert('Ошибка при создании плана');
+      } finally {
+          setIsSubmitting(false);
+      }
   };
 
   const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,7 +84,17 @@ export function CalendarPlanForm({ onSave, onBeforeCreate, semesters }: Calendar
     }
 
     importCalendarPlan(file, (importedData) => {
-      onSave(importedData);
+        // ИСПРАВЛЕНО: Если в файле нет метаданных, берем их из текущих полей формы
+        onSave({
+            title: importedData.title || title,
+            academic_year: importedData.academic_year || year,
+            group: importedData.group || group,
+            profile: importedData.profile || profile,
+            reg_number: importedData.reg_number || reg,
+            start_date: importedData.start_date || `${year}-09-01`,
+            end_date: importedData.end_date || `${parseInt(year) + 1}-08-31`,
+            courses: importedData.courses
+        });
     });
     e.target.value = '';
   };
