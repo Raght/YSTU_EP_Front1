@@ -21,17 +21,16 @@ type PlanData = {
 };
 
 type Props = {
+  currentDirectionId: number;
   plan: any;
   onSave: (data: PlanData) => void;
-  semesters: number;
 };
 
 const ALLOWED_WEEK_CODES = new Set(['', 'С', 'У', 'П', 'Д', 'Г', '=', 'Н']);
 const isAllowedWeekCode = (code: string) =>
   ALLOWED_WEEK_CODES.has(String(code).toUpperCase());
 
-function normalizePlanData(raw: any, semesters: number): PlanData {
-  const defaultCoursesCount = Math.ceil(semesters / 2);
+function normalizePlanData(raw: any): PlanData {
   
   if (raw && Array.isArray(raw.courses) && raw.courses.length > 0) {
     return {
@@ -58,10 +57,7 @@ function normalizePlanData(raw: any, semesters: number): PlanData {
     reg_number: '',
     start_date: '',
     end_date: '',
-    courses: Array.from({ length: defaultCoursesCount }, (_, i) => ({
-      course: i + 1,
-      weeks: Array(WEEK_COUNT).fill('')
-    })),
+    courses: [],
   };
 }
 
@@ -81,9 +77,9 @@ const getDateErrorMessage = (startDate: string, endDate: string): string | null 
   return null;
 };
 
-export function CalendarPlanGrid({ plan, onSave, semesters }: Props) {
+export function CalendarPlanGrid({ currentDirectionId, plan, onSave }: Props) {
   const [data, setData] = useState<PlanData>(() => {
-    const normalized = normalizePlanData(plan?.data, semesters);
+    const normalized = normalizePlanData(plan?.data);
     if (!normalized.start_date) {
       const year = normalized.academic_year || new Date().getFullYear();
       normalized.start_date = `${year}-09-01`;

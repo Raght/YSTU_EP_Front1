@@ -4,12 +4,13 @@ import { importCalendarPlan } from '../hooks/importCalendarPlan';
 import '../../styles/CalendarPlan.css';
 
 interface CalendarPlanFormProps {
+  currentDirectionId: number;
   onSave: (data: any) => void;
   onBeforeCreate?: () => Promise<string[]>;
   semesters: number;
 }
 
-export function CalendarPlanForm({ onSave, onBeforeCreate, semesters }: CalendarPlanFormProps) {
+export function CalendarPlanForm({ currentDirectionId, onSave, onBeforeCreate }: CalendarPlanFormProps) {
   const [title, setTitle] = useState('');
   const [year, setYear] = useState('');
   const [group, setGroup] = useState('');
