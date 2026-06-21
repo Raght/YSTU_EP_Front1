@@ -438,8 +438,9 @@ const Home = () => {
 								}}
 							>
 								<CalendarPlansTable
-								educationalPlanId={currentDirection.id}
-								onBeforeCreate={checkNonActualDepartments}
+									educationalPlanId={currentDirection.id}
+									semesters={currentDirection.semesters}
+									onBeforeCreate={checkNonActualDepartments}
 								/>
 							</div>
 						)}

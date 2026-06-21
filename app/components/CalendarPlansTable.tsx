@@ -10,7 +10,7 @@ type Props = {
   onBeforeCreate?: () => Promise<string[]>;
 };
 
-export function CalendarPlansTable({ educationalPlanId, onBeforeCreate }: Props) {
+export function CalendarPlansTable({ educationalPlanId, semesters, onBeforeCreate }: Props) {
   const { plans, loading, error, createPlan, updatePlan, deletePlan } =
     useCalendarPlans(educationalPlanId);
   console.log('CalendarPlansTable render:', { educationalPlanId, plans, loading, error });

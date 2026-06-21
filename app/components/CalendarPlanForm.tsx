@@ -10,8 +10,7 @@ interface CalendarPlanFormProps {
   semesters: number;
 }
 
-export function CalendarPlanForm({ currentDirectionId, onSave, onBeforeCreate }: CalendarPlanFormProps) {
-  const [title, setTitle] = useState('');
+export function CalendarPlanForm({ currentDirectionId, onSave, onBeforeCreate, semesters }: CalendarPlanFormProps) {  const [title, setTitle] = useState('');
   const [year, setYear] = useState('');
   const [group, setGroup] = useState('');
   const [profile, setProfile] = useState('');
