@@ -36,6 +36,7 @@ export interface TableRow {
 export interface EducationalLevel {
   id: number;
   name: string;
+  name_in_genetive: string;
 }
 
 export interface EducationalForm {
@@ -46,6 +47,8 @@ export interface EducationalForm {
 export interface DirectionData {
   id: number;
   name: string;
+  code: string;
+  profile: string;
   level: string;
   form: string;
   semesters: number;
@@ -68,12 +71,14 @@ export interface Competence {
   name: string;
   description: string;
   competency_group_id: number;
+  direction_id: number;
 }
 
 // Тип для группы компетенций
 export interface CompetencyGroup {
   id: number;
   name: string;
+  short_name: string;
 }
 
 // Тип для блока дисциплин (из бэкенда)

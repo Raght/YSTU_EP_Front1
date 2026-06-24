@@ -6,7 +6,6 @@ import '../../styles/CalendarPlan.css';
 
 type Props = {
   educationalPlanId: number;
-  semesters: number;
   onBeforeCreate?: () => Promise<string[]>;
 };
 

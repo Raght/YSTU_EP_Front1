@@ -12,7 +12,7 @@ interface HeaderProps {
 	onToggleCompetenceMatrix: () => void
 	showCompetenceMatrix: boolean
 	directionInfo?: string
-	onExportIndicatorsTableExcelClick: () => void
+	currentDirectionId: number
 }
 
 export const Header = ({
@@ -22,7 +22,8 @@ export const Header = ({
 	onExportEducationalPlanPdfClick: onExportEducationalPlanPdfClick,
 	onToggleCompetenceMatrix,
 	showCompetenceMatrix,
-	directionInfo
+	directionInfo,
+	currentDirectionId
 }: HeaderProps) => {
 	const [showReferences, setShowReferences] = useState(false)
 	const [isFileMenuHovered, setIsFileMenuHovered] = useState(false)
@@ -80,7 +81,10 @@ export const Header = ({
 			</div>
 
 			{showReferences && (
-				<ReferenceForm onClose={() => setShowReferences(false)} />
+				<ReferenceForm
+					currentDirectionId={currentDirectionId}
+					onClose={() => setShowReferences(false)}
+				/>
 			)}
 		</header>
 	)
