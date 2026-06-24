@@ -374,6 +374,7 @@ const Home = () => {
 						? `${currentDirection.name}, ${currentDirection.level}, ${currentDirection.form}, ${currentDirection.semesters} сем.`
 						: undefined
 				}
+				currentDirectionId={currentDirection ? currentDirection.id : null}
 			/>
 
 			<div className={mainContent['main-content']}>

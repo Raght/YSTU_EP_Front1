@@ -31,7 +31,7 @@ export const CompetenceMatrix: React.FC<CompetenceMatrixProps> = ({
 	onCompetencesChange,
 }) => {
 	const { competences, getCompetencesForBlock, updateBlockCompetences } =
-		useCompetences()
+		useCompetences(educationalPlanId)
 
 	const [groupCompetences, setGroupCompetences] = useState<
 		Record<string, number[]>
